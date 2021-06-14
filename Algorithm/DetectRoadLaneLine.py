@@ -32,15 +32,15 @@ vertices = np.array(
 # )
 
 
-def defind_vertices():
+def defind_vertices(image):
     return np.array(
         [
             [
                 # (imshape[1] * 0.111, imshape[0]),
-                (0, imshape[0]),
-                (imshape[1] * 0.47, imshape[0] * 0.6),
-                (imshape[1] * 0.53, imshape[0] * 0.6),
-                (imshape[1], imshape[0]),
+                (0, image.shape[0]),
+                (image.shape[1] * 0.47, image.shape[0] * 0.6),
+                (image.shape[1] * 0.53, image.shape[0] * 0.6),
+                (image.shape[1], image.shape[0]),
                 # (imshape[1] * 0.889, imshape[0]),
             ]
         ],
@@ -89,7 +89,7 @@ def process(image):
         ],
         dtype=np.int32,
     )
-    vertices2 = defind_vertices()
+    vertices2 = defind_vertices(image)
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     canny_image = cv2.Canny(gray_image, 100, 120)
     cropped_image = region_of_interest(canny_image, vertices2)
@@ -135,39 +135,39 @@ def process2(image):
     return cropped_image, image_with_lines
 
 
-# image = cv2.imread("/home/tan/Python Source/video/test_img3.png")
-# print(image.shape)
-# height = image.shape[0]
-# width = image.shape[1]
-# region_of_interest_vertices = [(400, height), (800, 730), (950, 730), (1200, height)]
-# # region_of_interest_vertices = [(0, height), (width / 2, height / 2), (width, height)]
-# gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-# canny_image = cv2.Canny(gray_image, 100, 120)
-# cropped_image = region_of_interest(
-#     canny_image,
-#     np.array([region_of_interest_vertices], np.int32),
-# )
-# lines = cv2.HoughLinesP(
-#     cropped_image, rho=1, theta=np.pi / 180, threshold=70, lines=np.array([]), minLineLength=50, maxLineGap=60
-# )
-# image_with_lines = drow_the_lines(image, lines)
+image = cv2.imread("/home/tan/Python Source/video/test_img3.png")
+print(image.shape)
+height = image.shape[0]
+width = image.shape[1]
+region_of_interest_vertices = [(400, height), (800, 730), (950, 730), (1200, height)]
+# region_of_interest_vertices = [(0, height), (width / 2, height / 2), (width, height)]
+gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+canny_image = cv2.Canny(gray_image, 100, 120)
+cropped_image = region_of_interest(
+    canny_image,
+    np.array([region_of_interest_vertices], np.int32),
+)
+lines = cv2.HoughLinesP(
+    cropped_image, rho=1, theta=np.pi / 180, threshold=70, lines=np.array([]), minLineLength=50, maxLineGap=60
+)
+image_with_lines = drow_the_lines(image, lines)
 
 ### CODE ###
-# cropped_image, image_with_lines = process2(image)
-# list = [cropped_image, image_with_lines]
-# # plt.imshow()
-# fig = plt.figure(figsize=(image.shape[0], image.shape[1]))
-# for i in range(len(list)):
-#     fig.add_subplot(1, 2, i + 1)
-#     plt.imshow(list[i])
-# plt.show()
-
-cropped_image = region_of_interest(image, vertices)
-plt.imshow(cropped_image)
+cropped_image, image_with_lines = process2(image)
+list = [cropped_image, image_with_lines]
+# plt.imshow()
+fig = plt.figure(figsize=(image.shape[0], image.shape[1]))
+for i in range(len(list)):
+    fig.add_subplot(1, 2, i + 1)
+    plt.imshow(list[i])
 plt.show()
 
+# cropped_image = region_of_interest(image, vertices)
+# plt.imshow(cropped_image)
+# plt.show()
 
-cap = cv2.VideoCapture("/home/tan/Python Source/video/test.mp4")
+
+# cap = cv2.VideoCapture("/home/tan/Python Source/video/test.mp4")
 
 # while cap.isOpened():
 #     ret, frame = cap.read()

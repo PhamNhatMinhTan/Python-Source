@@ -15,7 +15,7 @@ def region_of_interest(img, vertices):
 def canny(image):
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
-    canny = cv2.Canny(blur, 50, 150)
+    canny = cv2.Canny(blur, 100, 150)
     return canny
 
 
@@ -42,11 +42,21 @@ def process(image):
     # crop ảnh
     vertices = defind_vertices(image)
     cropped_image = region_of_interest(canny_image, vertices)
-    # thresh = cv2.Canny(imgray, 127, 255)  # nhị phân hóa ảnh
+    thresh = cv2.Canny(canny_image, 127, 255)  # nhị phân hóa ảnh
     contours, hierarchy = cv2.findContours(cropped_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # vẽ lại ảnh contour vào ảnh gốc
+    # cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
     cv2.drawContours(original_image, contours, -1, (0, 255, 0), 2)
+
+    cv2.line(
+        original_image,
+        (image.shape[1] // 2, int(image.shape[0] * 0.9)),
+        (image.shape[1] // 2, image.shape[0] // 2),
+        (255, 0, 0),
+        5,
+    )
+
     return original_image
 
 

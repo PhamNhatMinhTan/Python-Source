@@ -28,7 +28,7 @@ cv2.waitKey(0)
 """
 
 # Contour Video
-videoCapture = cv2.VideoCapture("/home/tan/Python Source/video/test2.mp4")
+videoCapture = cv2.VideoCapture("/home/tan/Python Source/video/test.mp4")
 while videoCapture.isOpened():
     _, frame = videoCapture.read()
     thresh = canny(frame)  # nhị phân hóa ảnh
